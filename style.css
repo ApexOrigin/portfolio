@@ -2207,3 +2207,8 @@ html {
     overflow-x: clip;
   }
 }
+*,
+*::before,
+*::after{
+    outline:1px solid red !important;
+}
