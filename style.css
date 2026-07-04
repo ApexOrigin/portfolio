@@ -2203,4 +2203,7 @@ html {
 
     height: auto;
   }
+  body {
+    overflow-x: clip;
+  }
 }
