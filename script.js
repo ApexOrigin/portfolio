@@ -1,75 +1,3 @@
-/* ===========================
-        LUCIDE ICONS
-=========================== */
-
-lucide.createIcons();
-
-/* ===========================
-      COUNTER ANIMATION
-=========================== */
-const navBtn = document.querySelector(".nav-btn");
-
-navBtn.addEventListener("click", () => {
-  document.getElementById("contact").scrollIntoView({
-    behavior: "smooth",
-  });
-});
-const contactBtn = document.querySelector(".secondary-btn");
-
-contactBtn.addEventListener("click", () => {
-  document.getElementById("contact").scrollIntoView({
-    behavior: "smooth",
-  });
-});
-
-const counters = document.querySelectorAll(".counter");
-
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-
-      const counter = entry.target;
-      const target = Number(counter.dataset.target);
-
-      let count = 0;
-      const speed = target / 70;
-
-      function update() {
-        if (count < target) {
-          count += speed;
-          counter.innerText = Math.ceil(count) + "+";
-          requestAnimationFrame(update);
-        } else {
-          counter.innerText = target + "+";
-        }
-      }
-
-      update();
-      observer.unobserve(counter);
-    });
-  },
-  { threshold: 0.6 },
-);
-
-counters.forEach((counter) => observer.observe(counter));
-
-/* ===========================
-            MODAL
-=========================== */
-
-const modal = document.getElementById("portfolioModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalGrid = document.getElementById("modalGrid");
-const closeBtn = document.getElementById("closeModal");
-const creativeLightbox = document.getElementById("creativeLightbox");
-const lightboxContent = document.getElementById("lightboxContent");
-const lightboxClose = document.getElementById("lightboxClose");
-
-/* ===========================
-            BLOGS
-=========================== */
-
 const blogs = [
   "10 Common Resume Errors You Must Avoid.pdf",
   "10 Essential Job Skills to Elevate Your Resume.pdf",
@@ -107,12 +35,6 @@ const blogs = [
   "Why should you Proofread your resume before sending it out.pdf",
   "Your Guide to Mastering the Art of Self-Introduction.pdf",
 ];
-
-/* ===========================
-         LINKEDIN
-=========================== */
-
-const linkedin = ["Parinitha.pdf"];
 const website = [
   "BlewMinds Website – Corporate StoryTelling.pdf",
   "BM Website - Culture Page.pdf",
@@ -122,15 +44,6 @@ const website = [
   "Training Workshops Page.pdf",
   "Unravelling Legacy BSS Challenges_ A Journey from Complexity to Clarity.pdf",
 ];
-
-const social = [
-  "Captions - JustHeadshots AI.pdf",
-  "Captions.pdf",
-  "Pravaayu.pdf",
-  "Sales Copy.pdf",
-  "Social Media Posts.pdf",
-];
-
 const creatives = [
   "4320 V1 CB2 Divyanka.mp4",
   "6180 V1 9-16 ACV1+ACV3 Barkha.mp4",
@@ -153,280 +66,326 @@ const creatives = [
   "Main road 2, 4x5.jpg",
   "Metro  copy.png",
 ];
-
 /* ===========================
-        OPEN MODAL
+        LUCIDE ICONS
 =========================== */
+
+lucide.createIcons();
+/*==================================================
+                INITIALIZATION
+==================================================*/
+
+lucide.createIcons();
+
+/*==================================================
+                HELPERS
+==================================================*/
+
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
+
+/*==================================================
+                DOM ELEMENTS
+==================================================*/
+
+const nav = $("nav");
+const menuToggle = $("#menuToggle");
+
+const workBtn = $(".primary-btn");
+const contactBtn = $(".secondary-btn");
+const navBtn = $(".nav-btn");
+
+const modal = $("#portfolioModal");
+const modalTitle = $("#modalTitle");
+const modalGrid = $("#modalGrid");
+const closeModalBtn = $("#closeModal");
+
+const creativeModal = $("#creativeModal");
+const creativeGrid = $("#creativeGrid");
+const creativeClose = $("#creativeClose");
+
+const viewer = $("#viewer");
+const viewerContent = $("#viewerContent");
+const viewerClose = $("#viewerClose");
+
+/*==================================================
+                SMOOTH SCROLL
+==================================================*/
+
+function scrollTo(id) {
+  const section = document.getElementById(id);
+
+  if (!section) return;
+
+  section.scrollIntoView({
+    behavior: "smooth",
+  });
+}
+
+workBtn?.addEventListener("click", () => {
+  scrollTo("work");
+});
+
+contactBtn?.addEventListener("click", () => {
+  scrollTo("contact");
+});
+
+navBtn?.addEventListener("click", () => {
+  scrollTo("contact");
+});
+
+/*==================================================
+                MOBILE MENU
+==================================================*/
+
+menuToggle?.addEventListener("click", () => {
+  nav.classList.toggle("active");
+
+  menuToggle.textContent = nav.classList.contains("active") ? "✕" : "☰";
+});
+
+$$("nav a").forEach((link) => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("active");
+
+    if (menuToggle) {
+      menuToggle.textContent = "☰";
+    }
+  });
+});
+
+/*==================================================
+                COUNTER
+==================================================*/
+
+const counters = $$(".counter");
+
+const counterObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      const counter = entry.target;
+
+      const target = Number(counter.dataset.target);
+
+      let current = 0;
+
+      const increment = target / 70;
+
+      function animate() {
+        if (current < target) {
+          current += increment;
+
+          counter.textContent = Math.ceil(current) + "+";
+
+          requestAnimationFrame(animate);
+        } else {
+          counter.textContent = target + "+";
+        }
+      }
+
+      animate();
+
+      counterObserver.unobserve(counter);
+    });
+  },
+
+  {
+    threshold: 0.6,
+  },
+);
+
+counters.forEach((counter) => {
+  counterObserver.observe(counter);
+});
+
+/*==================================================
+                DATA
+==================================================*/
+/*==================================================
+                    ARRAYS
+==================================================*/
+
+// KEEP YOUR EXISTING ARRAYS HERE EXACTLY AS THEY ARE
+
+// const blogs=[...]
+// const linkedin=[...]
+// const website=[...]
+// const social=[...]
+// const creatives=[...]
+
+/*==================================================
+                OPEN MODAL
+==================================================*/
+
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function createBlogList(files, folder) {
+  modalGrid.className = "modal-grid";
+
+  modalGrid.style.display = "block";
+
+  modalGrid.innerHTML = "";
+
+  files.forEach((file, index) => {
+    const title = file.replace(".pdf", "");
+
+    modalGrid.insertAdjacentHTML(
+      "beforeend",
+      `
+
+        <a href="${folder}/${encodeURIComponent(file)}"
+
+        target="_blank"
+
+        class="blog-item">
+
+            <span class="blog-no">
+
+                ${String(index + 1).padStart(2, "0")}
+
+            </span>
+
+            <div class="blog-info">
+
+                <h3>${title}</h3>
+
+            </div>
+
+            <span class="blog-arrow">
+
+                Open →
+
+            </span>
+
+        </a>
+
+        `,
+    );
+  });
+}
 
 function openModal(category) {
   modal.classList.add("active");
 
-  modalTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-
-  modalGrid.className = "modal-grid";
-  modalGrid.style.display = "grid";
+  modalTitle.textContent = capitalize(category);
 
   modalGrid.innerHTML = "";
 
-  if (category === "blogs") {
-    modalGrid.style.display = "block";
+  modalGrid.className = "modal-grid";
 
-    blogs.forEach((blog, index) => {
-      const title = blog.replace(".pdf", "");
+  switch (category) {
+    case "blogs":
+      createBlogList(
+        blogs,
 
-      modalGrid.innerHTML += `
+        "assets/blogs",
+      );
 
-            <a href="assets/blogs/${encodeURIComponent(blog)}"
-               target="_blank"
-               class="blog-item">
+      break;
 
-                <span class="blog-no">
-                    ${String(index + 1).padStart(2, "0")}
-                </span>
+    case "linkedin":
+      createBlogList(
+        linkedin,
 
-                <div class="blog-info">
+        "assets/LinkedIn%20Profile%20Writing",
+      );
 
-                    <h3>${title}</h3>
+      break;
+
+    case "website":
+      createBlogList(
+        website,
+
+        "assets/Website%20Copies",
+      );
+
+      break;
+
+    case "social":
+      createBlogList(
+        social,
+
+        "assets/Social%20Media",
+      );
+
+      break;
+
+    case "creatives":
+      openCreativeGallery();
+
+      modal.classList.remove("active");
+
+      return;
+
+    default:
+      modalGrid.innerHTML = `
+
+            <div class="project-card">
+
+                <div class="pdf-cover">
+
+                    <span>📄</span>
+
+                    <h4>${category.toUpperCase()}</h4>
 
                 </div>
 
-                <span class="blog-arrow">
-                    Open →
-                </span>
+                <div class="project-content">
 
-            </a>
+                    <h3>Coming Soon</h3>
 
-            `;
-    });
+                    <p>
 
-    return;
-  }
+                        Portfolio items will be added here.
 
-  /* LINKEDIN */
-
-  if (category === "linkedin") {
-    modalGrid.style.display = "block";
-
-    linkedin.forEach((file, index) => {
-      const title = file.replace(".pdf", "");
-
-      modalGrid.innerHTML += `
-
-            <a href="assets/LinkedIn%20Profile%20Writing/${encodeURIComponent(file)}"
-               target="_blank"
-               class="blog-item">
-
-                <span class="blog-no">
-                    ${String(index + 1).padStart(2, "0")}
-                </span>
-
-                <div class="blog-info">
-
-                    <h3>${title}</h3>
+                    </p>
 
                 </div>
 
-                <span class="blog-arrow">
-                    Open →
-                </span>
-
-            </a>
+            </div>
 
             `;
-    });
-
-    return;
   }
-  /* WEBSITE COPY */
-
-  if (category === "website") {
-    modalGrid.style.display = "block";
-    modalGrid.innerHTML = "";
-
-    website.forEach((file, index) => {
-      const title = file.replace(".pdf", "");
-
-      modalGrid.innerHTML += `
-
-        <a href="assets/Website%20Copies/${encodeURIComponent(file)}"
-           target="_blank"
-           class="blog-item">
-
-            <span class="blog-no">
-                ${String(index + 1).padStart(2, "0")}
-            </span>
-
-            <div class="blog-info">
-
-                <h3>${title}</h3>
-
-            </div>
-
-            <span class="blog-arrow">
-                Open →
-            </span>
-
-        </a>
-
-        `;
-    });
-
-    return;
-  }
-
-  /* SOCIAL MEDIA */
-
-  if (category === "social") {
-    modalGrid.style.display = "block";
-    modalGrid.innerHTML = "";
-
-    social.forEach((file, index) => {
-      const title = file.replace(".pdf", "");
-
-      modalGrid.innerHTML += `
-
-        <a href="assets/Social%20Media/${encodeURIComponent(file)}"
-           target="_blank"
-           class="blog-item">
-
-            <span class="blog-no">
-                ${String(index + 1).padStart(2, "0")}
-            </span>
-
-            <div class="blog-info">
-
-                <h3>${title}</h3>
-
-            </div>
-
-            <span class="blog-arrow">
-                Open →
-            </span>
-
-        </a>
-
-        `;
-    });
-
-    return;
-  }
-  /* CREATIVES */
-
-  if (category === "creatives") {
-    modalGrid.className = "modal-grid creative-gallery";
-    modalGrid.style.display = "grid";
-    modalGrid.innerHTML = "";
-
-    creatives.forEach((file) => {
-      const isVideo = file.endsWith(".mp4");
-
-      modalGrid.innerHTML += `
-
-        <div class="creative-card"
-             onclick="openCreative('${encodeURIComponent(file)}', ${isVideo})">
-
-            ${
-              isVideo
-                ? `<video loop playsinline preload="metadata">
-
-                    <source src="assets/Creatives/${encodeURIComponent(file)}">
-
-                </video>`
-                : `<img src="assets/Creatives/${encodeURIComponent(file)}">`
-            }
-
-            <div class="creative-overlay">
-
-                ${isVideo ? "▶" : "View"}
-
-            </div>
-
-        </div>
-
-        `;
-    });
-
-    return;
-  }
-
-  /* PLACEHOLDER */
-
-  modalGrid.style.display = "grid";
-
-  modalGrid.innerHTML = `
-
-        <div class="project-card">
-
-            <div class="pdf-cover">
-
-                <span>📄</span>
-
-                <h4>${category.toUpperCase()}</h4>
-
-            </div>
-
-            <div class="project-content">
-
-                <h3>${modalTitle.textContent}</h3>
-
-                <p>
-                    Portfolio items for this section will be added soon.
-                </p>
-
-            </div>
-
-        </div>
-
-    `;
 }
-/* ===========================
-        WORK CARD EVENTS
-=========================== */
-document.querySelectorAll(".work-card").forEach((card) => {
+
+/*==================================================
+                WORK CARDS
+==================================================*/
+
+$$(".work-card").forEach((card) => {
   card.addEventListener("click", () => {
     const category = card.dataset.category;
 
-    if (category === "creatives") {
-      openCreativeGallery();
-    } else {
-      openModal(category);
-    }
+    openModal(category);
   });
 });
-/* ===========================
-        CLOSE MODAL
-=========================== */
 
-closeBtn.addEventListener("click", () => {
+/*==================================================
+                CLOSE MODAL
+==================================================*/
+
+closeModalBtn?.addEventListener("click", () => {
   modal.classList.remove("active");
 });
 
-modal.addEventListener("click", (e) => {
+modal?.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.classList.remove("active");
   }
 });
+/*==================================================
+                CREATIVE VIEWER
+==================================================*/
 
-/* ===========================
-        HERO BUTTONS
-=========================== */
+function openCreativeMedia(file, isVideo) {
+  viewer.classList.add("active");
 
-if (contactBtn) {
-  contactBtn.addEventListener("click", () => {
-    const contact = document.getElementById("contact");
-
-    if (contact) {
-      contact.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
-  });
-}
-function openCreative(file, isVideo) {
-  creativeLightbox.classList.add("active");
-
-  if (isVideo) {
-    lightboxContent.innerHTML = `
+  viewerContent.innerHTML = isVideo
+    ? `
 
         <video controls autoplay>
 
@@ -434,36 +393,40 @@ function openCreative(file, isVideo) {
 
         </video>
 
-        `;
-  } else {
-    lightboxContent.innerHTML = `
+        `
+    : `
 
         <img src="assets/Creatives/${file}">
 
         `;
-  }
 }
 
-lightboxClose.onclick = () => {
-  creativeLightbox.classList.remove("active");
+window.openCreativeMedia = openCreativeMedia;
 
-  lightboxContent.innerHTML = "";
-};
+viewerClose?.addEventListener("click", closeViewer);
 
-creativeLightbox.onclick = (e) => {
-  if (e.target === creativeLightbox) {
-    creativeLightbox.classList.remove("active");
-
-    lightboxContent.innerHTML = "";
+viewer?.addEventListener("click", (e) => {
+  if (e.target === viewer) {
+    closeViewer();
   }
-};
-/* ===========================
-      CREATIVE GALLERY
-=========================== */
+});
 
-const creativeModal = document.getElementById("creativeModal");
-const creativeGrid = document.getElementById("creativeGrid");
-const creativeClose = document.getElementById("creativeClose");
+function closeViewer() {
+  viewer.classList.remove("active");
+
+  const video = viewer.querySelector("video");
+
+  if (video) {
+    video.pause();
+  }
+
+  viewerContent.innerHTML = "";
+}
+
+/*==================================================
+                CREATIVE GALLERY
+==================================================*/
+
 function openCreativeGallery() {
   creativeModal.classList.add("active");
 
@@ -472,100 +435,144 @@ function openCreativeGallery() {
   creatives.forEach((file) => {
     const isVideo = file.toLowerCase().endsWith(".mp4");
 
-    creativeGrid.innerHTML += `
+    creativeGrid.insertAdjacentHTML(
+      "beforeend",
 
-        <div class="creative-card"
-onclick="openCreativeMedia('${encodeURIComponent(file)}',${isVideo})">
+      `
 
-            ${
-              isVideo
-                ? `<video muted loop playsinline preload="metadata">
+            <div class="creative-card"
 
-                    <source src="assets/Creatives/${encodeURIComponent(file)}">
+            onclick="openCreativeMedia('${encodeURIComponent(file)}',${isVideo})">
 
-                </video>`
-                : `<img src="assets/Creatives/${encodeURIComponent(file)}">`
-            }
+                ${
+                  isVideo
+                    ? `
 
-        </div>
+                    <video
 
-        `;
+                        muted
+
+                        loop
+
+                        playsinline
+
+                        preload="metadata">
+
+                        <source
+
+                        src="assets/Creatives/${encodeURIComponent(file)}">
+
+                    </video>
+
+                    `
+                    : `
+
+                    <img
+
+                    src="assets/Creatives/${encodeURIComponent(file)}">
+
+                    `
+                }
+
+            </div>
+
+            `,
+    );
   });
 
   creativeGrid.querySelectorAll("video").forEach((video) => {
     video.addEventListener("mouseenter", () => {
       video.muted = false;
-      video.volume = 1;
-      video.play();
+
+      video.play().catch(() => {});
     });
 
     video.addEventListener("mouseleave", () => {
       video.pause();
+
       video.currentTime = 0;
+
       video.muted = true;
     });
   });
-
-  function closeCreativeMedia() {
-    creativeModal.innerHTML = `
-
-        <button class="creative-close" id="creativeClose">
-
-            ✕
-
-        </button>
-
-        <div class="creative-grid" id="creativeGrid"></div>
-
-    `;
-
-    window.creativeGrid = document.getElementById("creativeGrid");
-
-    window.creativeClose = document.getElementById("creativeClose");
-
-    creativeClose.onclick = () => {
-      creativeModal.classList.remove("active");
-    };
-
-    openCreativeGallery();
-  }
-
-  creativeClose.onclick = () => {
-    creativeModal.classList.remove("active");
-  };
-
-  creativeModal.onclick = (e) => {
-    if (e.target === creativeModal) {
-      creativeModal.classList.remove("active");
-    }
-  };
-  const viewer = document.getElementById("viewer");
-  const viewerContent = document.getElementById("viewerContent");
-  const viewerClose = document.getElementById("viewerClose");
-
-  viewerClose.onclick = () => {
-    viewer.classList.remove("active");
-
-    viewerContent.innerHTML = "";
-  };
-
-  function openCreativeMedia(file, isVideo) {
-    viewer.classList.add("active");
-
-    viewerContent.innerHTML = isVideo
-      ? `<video controls autoplay>
-
-        <source src="assets/Creatives/${file}">
-
-    </video>`
-      : `<img src="assets/Creatives/${file}">`;
-  }
-  viewer.onclick = (e) => {
-    if (e.target === viewer) {
-      viewer.classList.remove("active");
-
-      viewerContent.innerHTML = "";
-    }
-  };
-  console.log("✅ Portfolio Loaded Successfully");
 }
+
+/*==================================================
+            CLOSE CREATIVE MODAL
+==================================================*/
+
+creativeClose?.addEventListener("click", () => {
+  creativeModal.classList.remove("active");
+});
+
+creativeModal?.addEventListener("click", (e) => {
+  if (e.target === creativeModal) {
+    creativeModal.classList.remove("active");
+  }
+});
+
+/*==================================================
+            ESC KEY SUPPORT
+==================================================*/
+
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+
+  modal.classList.remove("active");
+
+  creativeModal.classList.remove("active");
+
+  closeViewer();
+});
+
+/*==================================================
+            PRELOAD VIDEOS
+==================================================*/
+
+window.addEventListener("load", () => {
+  document
+
+    .querySelectorAll("video")
+
+    .forEach((video) => {
+      video.preload = "metadata";
+    });
+});
+
+/*==================================================
+            ACTIVE NAV LINK
+==================================================*/
+
+const sections = document.querySelectorAll("section[id]");
+
+window.addEventListener("scroll", () => {
+  let current = "";
+
+  sections.forEach((section) => {
+    const top = section.offsetTop - 150;
+
+    const height = section.offsetHeight;
+
+    if (scrollY >= top && scrollY < top + height) {
+      current = section.id;
+    }
+  });
+
+  document.querySelectorAll("nav a").forEach((link) => {
+    link.classList.remove("active");
+
+    if (link.getAttribute("href") === "#" + current) {
+      link.classList.add("active");
+    }
+  });
+});
+
+/*==================================================
+            FINISHED
+==================================================*/
+
+console.log(
+  "%cPortfolio Loaded Successfully",
+
+  "color:#9a6b45;font-size:14px;font-weight:bold;",
+);
